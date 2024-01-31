@@ -1,7 +1,9 @@
 ---
+import Header from '../components/Header.astro';
+
 interface Props {
 	title: string;
-  description?: string;
+  description: string;
 }
 
 const { title, description } = Astro.props;
@@ -17,14 +19,28 @@ const { title, description } = Astro.props;
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body class="relative text-black dark:text-white">
+    <div class="absolute top-0 z-[-2] h-screen w-screen bg-[radial-gradient(ellipse_40%_50%_at_50%_60%,rgba(10,10,20,1),rgba(3,3,6,1))]"></div>
+    <Header />
 		<slot />
 	</body>
 </html>
 <style is:global>
+    :root {
+    color-scheme: light dark;
+  }
+  body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overscroll-behavior: none;
+  }
 	html {
 		font-family: system-ui, sans-serif;
-		background: #13151a;
+		/* background: #13151a; */
 		background-size: 224px;
+    scroll-behavior: smooth;
 	}
 </style>
+
+
