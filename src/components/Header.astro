@@ -1,0 +1,149 @@
+---
+
+const navItems = [
+  {
+    name: 'Experiencia',
+    label: 'experiencia',
+    url: '/#experiencia'
+  },
+  {
+    name: 'Proyectos',
+    label: 'proyectos',
+    url: '/#proyectos'
+  },
+  {
+    name: 'Sobre mí',
+    label: 'sobre-mi',
+    url: '/#sobre-mi'
+  },
+  {
+    name: 'Contacto',
+    label: 'contacto',
+    url: '/#contacto'
+  }
+]
+---
+
+<header id="header" class="h-16 flex justify-center items-center mx-auto pt-4 sticky top-0 w-full z-10">
+  <nav
+    id="nav"
+    class={`
+      w-[35%] h-full
+      border border-sky-900/50 rounded-2xl px-3 py-1
+      flex flex-wrap flex-row items-center justify-center
+    bg-black/50
+    `}
+  >
+    {
+      navItems.map((link) => (
+        <a
+          href={link.url}
+          aria-label={link.label}
+          class={` 
+            p-1 px-3 
+            text-base`}
+        >
+          {link.name}
+        </a>
+      ))
+    }
+  </nav>
+  <div
+    id="menu-backdrop"
+    class={`
+      absolute bg-sky-900
+      left-[var(--left)] top-[var(--top)]
+      w-[var(--width)] h-[var(--height)]
+      transition-all duration-500
+      ease-in-out opacity-0 -z-10
+      rounded-full shadow-2xl
+    `}>
+  </div>
+</header>
+
+<script>
+  const navItems = document.querySelectorAll('#nav a')
+  const menuBackdrop = document.querySelector('#menu-backdrop') as HTMLElement
+  
+  navItems.forEach((item) => {
+    item.addEventListener('mouseenter', () => {
+      const { left, top, width, height } = item.getBoundingClientRect()
+      const { clientHeight, clientWidth } = item
+      
+      menuBackdrop.style.setProperty('--left', `${left}px`)
+      menuBackdrop.style.setProperty('--top', `${top}px`)
+      menuBackdrop.style.setProperty('--width', `${width}px`)
+      menuBackdrop.style.setProperty('--height', `${height}px`)
+      
+      menuBackdrop.style.opacity = "1"
+      menuBackdrop.style.visibility = "visible"
+    })
+    
+    item.addEventListener('mouseleave', () => {
+    })
+    
+    item.addEventListener('mouseleave', () => {
+      // Obtén la sección actual desde la URL y selecciona el enlace correspondiente
+      const currentSection = window.location.hash.substring(1);
+      const currentLink = Array.from(navItems).find(link => link.getAttribute('href') === `/#${currentSection}`);
+      
+      if (currentLink) {
+        const { left, top, width, height } = currentLink.getBoundingClientRect();
+        
+        menuBackdrop.style.setProperty('--left', `${left}px`);
+        menuBackdrop.style.setProperty('--top', `${top}px`);
+        menuBackdrop.style.setProperty('--width', `${width}px`);
+        menuBackdrop.style.setProperty('--height', `${height}px`);
+      } else {
+        // Si no se encuentra el enlace correspondiente, oculta la barra de navegación
+        menuBackdrop.style.opacity = "0";
+        menuBackdrop.style.visibility = "hidden";
+      }
+    });
+    
+    window.addEventListener('beforeunload', () => {
+      const navState = {
+        left: menuBackdrop.style.getPropertyValue('--left'),
+        top: menuBackdrop.style.getPropertyValue('--top'),
+        width: menuBackdrop.style.getPropertyValue('--width'),
+        height: menuBackdrop.style.getPropertyValue('--height'),
+        opacity: menuBackdrop.style.opacity,
+        visibility: menuBackdrop.style.visibility,
+      };
+
+      localStorage.setItem('navState', JSON.stringify(navState));
+    });
+
+  // Recupera el estado del menú desde localStorage al cargar la página
+    window.addEventListener('load', () => {
+      const savedNavState = localStorage.getItem('navState');
+
+      if (savedNavState) {
+        const navState = JSON.parse(savedNavState);
+
+        menuBackdrop.style.setProperty('--left', navState.left);
+        menuBackdrop.style.setProperty('--top', navState.top);
+        menuBackdrop.style.setProperty('--width', navState.width);
+        menuBackdrop.style.setProperty('--height', navState.height);
+        menuBackdrop.style.opacity = navState.opacity;
+        menuBackdrop.style.visibility = navState.visibility;
+      }
+    });
+  });
+  
+  
+  
+</script>
+
+<style>
+  nav {
+    animation: nav-shadown 1s linear both;
+    animation-timeline: scroll();
+    animation-range: 0 400px;
+  }
+  @keyframes nav-shadown {
+    to {
+      @apply shadow-xl;
+    }
+  }
+</style>
