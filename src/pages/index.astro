@@ -1,9 +1,16 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Card from '../components/Card.astro';
+import SectionContainer from '../components/SectionContainer.astro';
+import Hero from '../components/Hero.astro';
 ---
 
-<Layout title="Mi porfolio - Fran Abad" description='Porfolio de Fran Abad Mederos - Desarrollador web y programador'>
+<Layout title="Mi porfolio - Fran Abad" description='Porfolio de Francisco Abad Mederos - Desarrollador web y programador'>
 	<main>
+    <SectionContainer class="py-40">
+      <Hero>
+        </slot>
+      </Hero>  
+    </SectionContainer>
 	</main>
 </Layout>
