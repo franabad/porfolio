@@ -31,7 +31,7 @@ const navItems = [
       w-[35%] h-full
       border border-sky-900/50 rounded-2xl px-3 py-1
       flex flex-wrap flex-row items-center justify-center
-    bg-black/50
+    bg-black/50 backdrop-blur-sm
     `}
   >
     {
@@ -51,7 +51,7 @@ const navItems = [
   <div
     id="menu-backdrop"
     class={`
-      absolute bg-sky-900
+      absolute bg-gray-500/40
       left-[var(--left)] top-[var(--top)]
       w-[var(--width)] h-[var(--height)]
       transition-all duration-500
@@ -83,7 +83,6 @@ const navItems = [
     })
     
     item.addEventListener('mouseleave', () => {
-      // Obtén la sección actual desde la URL y selecciona el enlace correspondiente
       const currentSection = window.location.hash.substring(1);
       const currentLink = Array.from(navItems).find(link => link.getAttribute('href') === `/#${currentSection}`);
       
@@ -95,7 +94,6 @@ const navItems = [
         menuBackdrop.style.setProperty('--width', `${width}px`);
         menuBackdrop.style.setProperty('--height', `${height}px`);
       } else {
-        // Si no se encuentra el enlace correspondiente, oculta la barra de navegación
         menuBackdrop.style.opacity = "0";
         menuBackdrop.style.visibility = "hidden";
       }
@@ -114,7 +112,6 @@ const navItems = [
       localStorage.setItem('navState', JSON.stringify(navState));
     });
 
-  // Recupera el estado del menú desde localStorage al cargar la página
     window.addEventListener('load', () => {
       const savedNavState = localStorage.getItem('navState');
 
